@@ -1,12 +1,12 @@
-# 🦅 corvus
+# corvus
 
-Exploratory pattern analysis engine. Detects routines, emerging interests, anomalies, and opportunities.
+🦅 Exploratory pattern analysis engine. Detects routines, emerging interests, anomalies, and opportunities.
 
 ---
 
 ## 📖 Overview
 
-Corvus handles core responsibilities in the Indigo system. See SKILL.md for operational details.
+Ucorvus handles core responsibilities in the Indigo system. See SKILL.md for operational details.
 
 ---
 
