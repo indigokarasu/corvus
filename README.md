@@ -1,12 +1,12 @@
 # 🐦‍⬛ corvus
 
-Exploratory pattern analysis engine. Detects routines, emerging interests, anomalies, and cross-domain opportunities.
+Exploratory pattern analysis engine. Detects routines, emerging interests, anomalies, stalled threads, and cross-domain opportunities from the knowledge graph and accumulated activity signals.
 
 ---
 
 ## 📖 Overview
 
-Corvus discovers patterns and novelty. Analyzes browsing and activity, detects emerging interests, identifies anomalies, and finds cross-domain opportunities.
+Corvus is a core component of the Indigo system. See SKILL.md for operational details.
 
 ---
 
@@ -18,29 +18,15 @@ Corvus discovers patterns and novelty. Analyzes browsing and activity, detects e
 git clone https://github.com/indigokarasu/corvus.git
 ```
 
-### 🛠️ Tool Surface
+### 🛠️ Configuration
 
-```
-corvus.analyze_patterns(data, ...)          🔍 Analyze patterns
-corvus.detect_anomalies(...)                ⚠️ Detect anomalies
-corvus.find_emerging_interests(...)         ⭐ Find emerging interests
-corvus.cross_domain_analysis(...)           🌐 Cross-domain analysis
-corvus.get_opportunities(...)               💡 Find opportunities
-```
+Read `SKILL.md` for:
+- ⚙️ Operational behavior
+- 🔗 Skill cooperation
+- 📋 Tool surface
+- 🔒 Privacy and data handling
 
-### 📤 Output
-
-- **corvus_patterns** — Detected patterns and routines
-- **corvus_novelty** — Novel patterns and anomalies
-- **corvus_insights** — Opportunity analysis and insights
-
----
-
-## ⚙️ Configuration
-
-Read `SKILL.md` for operational details, pattern detection algorithms, and cooperation with other skills.
-
-Read `references/` for schemas and examples.
+Read `references/` for detailed schemas, heuristics, and examples.
 
 ---
 
