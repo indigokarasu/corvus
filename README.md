@@ -1,4 +1,4 @@
-# 🐦 corvus
+# 🐦‍⬛ corvus
 
 Exploratory pattern analysis engine. Detects routines, emerging interests, anomalies, and cross-domain opportunities.
 
