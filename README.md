@@ -1,32 +1,41 @@
-# 🐦‍⬛ corvus
+# 🐦‍⬛ Corvus
 
-Exploratory pattern analysis engine. Detects routines, emerging interests, anomalies, stalled threads, and cross-domain opportunities from the knowledge graph and accumulated activity signals.
+Corvus observes behavioral patterns in the knowledge graph, validates them against evidence, and produces structured insight proposals. It runs exploratory analysis during idle cycles, discovering new connections and surfacing actionable opportunities backed by evidence.
 
 ---
 
 ## 📖 Overview
 
-Corvus is a core component of the Indigo system. See SKILL.md for operational details.
+Exploratory pattern analysis engine. Detects routines, emerging interests, anomalies, stalled threads, and cross-domain opportunities from the knowledge graph and accumulated activity signals.
 
 ---
 
-## 🚀 Quick Start
+## 🔧 Tool Surface
 
-### 📦 Installation
+- `corvus.analyze.light` — routine detection, thread monitoring, interest clustering
+- `corvus.analyze.deep` — cross-domain traversal, hypothesis testing, model refinement
+- `corvus.proposals.list` — list current insight proposals with confidence scores
+- `corvus.proposals.detail` — full evidence and reasoning for specific proposal
+- `corvus.hypotheses.list` — active hypotheses under investigation
+- `corvus.status` — analysis state: patterns detected, proposals pending, graph coverage
 
-```bash
-git clone https://github.com/indigokarasu/corvus.git
-```
+---
 
-### 🛠️ Configuration
+## 📊 Output & Journals
 
-Read `SKILL.md` for:
-- ⚙️ Operational behavior
-- 🔗 Skill cooperation
-- 📋 Tool surface
-- 🔒 Privacy and data handling
+Produces: Produces insight proposal records with evidence chains. Logs pattern validation checks and hypothesis evaluation results.
 
-Read `references/` for detailed schemas, heuristics, and examples.
+---
+
+
+
+---
+
+## 📚 Documentation
+
+Read `SKILL.md` for operational details, schemas, and validation rules.
+
+See `references/` for detailed specifications and examples.
 
 ---
 
