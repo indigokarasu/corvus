@@ -23,7 +23,7 @@ Exploratory pattern analysis engine. Detects routines, emerging interests, anoma
 
 ## 📊 Output & Journals
 
-Produces: Produces insight proposal records with evidence chains. Logs pattern validation checks and hypothesis evaluation results.
+Insight proposal records with evidence chains. Pattern validation checks and hypothesis evaluation results.
 
 ---
 
