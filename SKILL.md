@@ -43,6 +43,52 @@ Corvus emits BehavioralSignal files to Praxis and InsightProposal files to Vespe
 - `corvus.status` — return current analysis state: patterns detected, proposals pending, graph coverage
 - `corvus.journal` — write journal for the current run; called at end of every run
 
+
+## Functions
+
+### corvus_analyze_light()
+
+**Purpose:** run a light analysis cycle: routine detection, thread monitoring, interest clustering
+
+**Returns:** Operation result
+
+### corvus_analyze_deep()
+
+**Purpose:** run a deep exploration cycle: cross-domain traversal, hypothesis testing, model refinement
+
+**Returns:** Operation result
+
+### corvus_proposals_list()
+
+**Purpose:** list current insight proposals with confidence scores
+
+**Returns:** Operation result
+
+### corvus_proposals_detail()
+
+**Purpose:** show full evidence and reasoning for a specific proposal
+
+**Returns:** Operation result
+
+### corvus_hypotheses_list()
+
+**Purpose:** list active hypotheses under investigation
+
+**Returns:** Operation result
+
+### corvus_status()
+
+**Purpose:** return current analysis state: patterns detected, proposals pending, graph coverage
+
+**Returns:** Operation result
+
+### corvus_journal()
+
+**Purpose:** write journal for the current run; called at end of every run
+
+**Returns:** Operation result
+
+
 ## Operation modes
 
 ### Light Analysis Cycle
