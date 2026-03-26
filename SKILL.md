@@ -1,12 +1,14 @@
 ---
 name: ocas-corvus
-description: Corvus: exploratory pattern analysis engine for the system knowledge graph and skill journals. Detects routines, emerging interests, anomalies, stalled threads, and cross-domain opportunities from accumulated activity signals. Trigger phrases: 'analyze patterns', 'detect routines', 'find anomalies', 'what patterns do you see', 'exploration cycle', 'run analysis'. Do not use for web research (use Sift), person investigations (use Scout), or system architecture changes (use Mentor).
+source: https://github.com/indigokarasu/corvus
+install: openclaw skill install https://github.com/indigokarasu/corvus
+description: Use when analyzing behavioral patterns, detecting routines, finding anomalies in the knowledge graph, or running exploration cycles across accumulated activity signals. Detects routines, emerging interests, stalled threads, and cross-domain opportunities. Trigger phrases: 'analyze patterns', 'detect routines', 'find anomalies', 'what patterns do you see', 'exploration cycle', 'run analysis'. Do not use for web research (use Sift), person investigations (use Scout), or system architecture changes (use Mentor).
 metadata: {"openclaw":{"emoji":"🐦‍⬛"}}
 ---
 
 # Corvus
 
-Corvus is the system's exploratory intelligence engine. It analyzes the knowledge graph and activity signals to discover behavioral patterns, test hypotheses, and produce structured insight proposals supported by evidence.
+Corvus is the system's curiosity engine — it continuously scans the knowledge graph and skill journals to surface behavioral patterns, emerging interests, stalled threads, and cross-domain opportunities that no single skill would notice on its own. It works by forming hypotheses, testing them against accumulated signals, and emitting validated proposals downstream to Praxis and Vesper for action and briefing.
 
 ## When to use
 
@@ -42,52 +44,6 @@ Corvus emits BehavioralSignal files to Praxis and InsightProposal files to Vespe
 - `corvus.hypotheses.list` — list active hypotheses under investigation
 - `corvus.status` — return current analysis state: patterns detected, proposals pending, graph coverage
 - `corvus.journal` — write journal for the current run; called at end of every run
-
-
-## Functions
-
-### corvus_analyze_light()
-
-**Purpose:** run a light analysis cycle: routine detection, thread monitoring, interest clustering
-
-**Returns:** Operation result
-
-### corvus_analyze_deep()
-
-**Purpose:** run a deep exploration cycle: cross-domain traversal, hypothesis testing, model refinement
-
-**Returns:** Operation result
-
-### corvus_proposals_list()
-
-**Purpose:** list current insight proposals with confidence scores
-
-**Returns:** Operation result
-
-### corvus_proposals_detail()
-
-**Purpose:** show full evidence and reasoning for a specific proposal
-
-**Returns:** Operation result
-
-### corvus_hypotheses_list()
-
-**Purpose:** list active hypotheses under investigation
-
-**Returns:** Operation result
-
-### corvus_status()
-
-**Purpose:** return current analysis state: patterns detected, proposals pending, graph coverage
-
-**Returns:** Operation result
-
-### corvus_journal()
-
-**Purpose:** write journal for the current run; called at end of every run
-
-**Returns:** Operation result
-
 
 ## Operation modes
 
@@ -275,8 +231,9 @@ public
 
 ## Support file map
 
-File | When to read
-`references/schemas.md` | Before creating hypotheses, patterns, or proposals
-`references/curiosity_engine.md` | Before drive scoring or hypothesis generation
-`references/pattern_engines.md` | Before pattern detection or validation
-`references/journal.md` | Before corvus.journal; at end of every run
+| File | When to read |
+|---|---|
+| `references/schemas.md` | Before creating hypotheses, patterns, or proposals |
+| `references/curiosity_engine.md` | Before drive scoring or hypothesis generation |
+| `references/pattern_engines.md` | Before pattern detection or validation |
+| `references/journal.md` | Before corvus.journal; at end of every run |
