@@ -46,7 +46,7 @@ In a system that accumulates signals from browsing, research, communications, an
 
 ## Changelog
 
-### v2.2.1 -- March 27, 2026
+### v2.3.0 -- March 27, 2026
 - Added `corvus.update` command and midnight cron for automatic version-checked self-updates
 
 ### v2.2.0 -- March 22, 2026
