@@ -13,7 +13,27 @@
     ],
     "write": [
       "~/openclaw/data/ocas-corvus/",
-      "~/openclaw/journals/ocas-corvus/"
+      "~/openclaw/journals/ocas-corvus/",
+      "~/openclaw/data/ocas-praxis/intake/",
+      "~/openclaw/data/ocas-vesper/intake/"
     ]
-  }
+  },
+  "self_update": {
+    "source": "https://github.com/indigokarasu/corvus",
+    "mechanism": "version-checked tarball from GitHub via gh CLI",
+    "command": "corvus.update",
+    "requires_binaries": [
+      "gh",
+      "tar",
+      "python3"
+    ]
+  },
+  "scheduled_tasks": [
+    {
+      "name": "corvus:update",
+      "schedule": "0 0 * * *",
+      "command": "corvus.update",
+      "description": "Self-update from GitHub source"
+    }
+  ]
 }
