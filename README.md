@@ -19,10 +19,11 @@ In a system that accumulates signals from browsing, research, communications, an
 | `corvus.hypotheses.list` | List active hypotheses under investigation |
 | `corvus.status` | Current analysis state: patterns detected, proposals pending, graph coverage |
 | `corvus.journal` | Write journal for the current run |
+| `corvus.update` | Pull latest from GitHub source (preserves journals and data) |
 
 ## Setup
 
-`corvus.init` runs automatically on first invocation and creates all required directories, config.json, and JSONL files. It also registers the `corvus:deep` cron job (daily 3am) and the `corvus:light` heartbeat entry. No manual setup is required.
+`corvus.init` runs automatically on first invocation and creates all required directories, config.json, and JSONL files. It also registers the `corvus:deep` cron job (daily 3am) and the `corvus:light` heartbeat entry and `corvus:update` (midnight daily, self-update). No manual setup is required.
 
 ## Dependencies
 
@@ -41,8 +42,12 @@ In a system that accumulates signals from browsing, research, communications, an
 |---|---|---|---|
 | `corvus:deep` | cron | `0 3 * * *` (daily 3am) | Full exploration cycle |
 | `corvus:light` | heartbeat | Every heartbeat pass | Routine detection and thread monitoring |
+| `corvus:update` | cron | `0 0 * * *` (midnight daily) | Self-update from GitHub source |
 
 ## Changelog
+
+### v2.2.1 -- March 27, 2026
+- Added `corvus.update` command and midnight cron for automatic version-checked self-updates
 
 ### v2.2.0 -- March 22, 2026
 - Routing improvements and short-name trigger aliases

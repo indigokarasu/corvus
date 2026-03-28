@@ -44,6 +44,7 @@ Corvus emits BehavioralSignal files to Praxis and InsightProposal files to Vespe
 - `corvus.hypotheses.list` — list active hypotheses under investigation
 - `corvus.status` — return current analysis state: patterns detected, proposals pending, graph coverage
 - `corvus.journal` — write journal for the current run; called at end of every run
+- `corvus.update` — pull latest from GitHub source; preserves journals and data
 
 ## Operation modes
 
@@ -205,7 +206,8 @@ On first invocation of any Corvus command, run `corvus.init`:
 6. Ensure `~/openclaw/data/ocas-vesper/intake/` exists (create if missing)
 7. Register cron job `corvus:deep` if not already present (check `openclaw cron list` first)
 8. Register heartbeat entry `corvus:light` in `HEARTBEAT.md` if not already present
-9. Log initialization as a DecisionRecord in `decisions.jsonl`
+9. Register cron job `corvus:update` if not already present (check `openclaw cron list` first)
+10. Log initialization as a DecisionRecord in `decisions.jsonl`
 
 ## Background tasks
 
@@ -213,6 +215,7 @@ On first invocation of any Corvus command, run `corvus.init`:
 |---|---|---|---|
 | `corvus:deep` | cron | `0 3 * * *` (daily 3am) | `corvus.analyze.deep` — full exploration cycle |
 | `corvus:light` | heartbeat | every heartbeat pass | `corvus.analyze.light` — routine detection, thread monitoring |
+| `corvus:update` | cron | `0 0 * * *` (midnight daily) | `corvus.update` |
 
 Cron options for `corvus:deep`: `sessionTarget: isolated`, `lightContext: true`, `wakeMode: next-heartbeat`.
 
@@ -221,9 +224,33 @@ Registration during `corvus.init`:
 openclaw cron list
 # If corvus:deep absent:
 openclaw cron add --name corvus:deep --schedule "0 3 * * *" --command "corvus.analyze.deep" --sessionTarget isolated --lightContext true --wakeMode next-heartbeat --timezone America/Los_Angeles
+# If corvus:update absent:
+openclaw cron add --name corvus:update --schedule "0 0 * * *" --command "corvus.update" --sessionTarget isolated --lightContext true --timezone America/Los_Angeles
 ```
 
 Heartbeat registration: append `corvus:light` entry to `~/.openclaw/workspace/HEARTBEAT.md` if not already present.
+
+
+## Self-update
+
+`corvus.update` pulls the latest package from the `source:` URL in this file's frontmatter. Runs silently — no output unless the version changed or an error occurred.
+
+1. Read `source:` from frontmatter → extract `{owner}/{repo}` from URL
+2. Read local version from `skill.json`
+3. Fetch remote version: `gh api "repos/{owner}/{repo}/contents/skill.json" --jq '.content' | base64 -d | python3 -c "import sys,json;print(json.load(sys.stdin)['version'])"`
+4. If remote version equals local version → stop silently
+5. Download and install:
+   ```bash
+   TMPDIR=$(mktemp -d)
+   gh api "repos/{owner}/{repo}/tarball/main" > "$TMPDIR/archive.tar.gz"
+   mkdir "$TMPDIR/extracted"
+   tar xzf "$TMPDIR/archive.tar.gz" -C "$TMPDIR/extracted" --strip-components=1
+   cp -R "$TMPDIR/extracted/"* ./
+   rm -rf "$TMPDIR"
+   ```
+6. On failure → retry once. If second attempt fails, report the error and stop.
+7. Output exactly: `I updated Corvus from version {old} to {new}`
+
 
 ## Visibility
 
