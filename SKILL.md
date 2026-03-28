@@ -2,7 +2,7 @@
 name: ocas-corvus
 source: https://github.com/indigokarasu/corvus
 install: openclaw skill install https://github.com/indigokarasu/corvus
-description: Use when analyzing behavioral patterns, detecting routines, finding anomalies in the knowledge graph, or running exploration cycles across accumulated activity signals. Detects routines, emerging interests, stalled threads, and cross-domain opportunities. Trigger phrases: 'analyze patterns', 'detect routines', 'find anomalies', 'what patterns do you see', 'exploration cycle', 'run analysis'. Do not use for web research (use Sift), person investigations (use Scout), or system architecture changes (use Mentor).
+description: Use when analyzing behavioral patterns, detecting routines, finding anomalies in the knowledge graph, or running exploration cycles across accumulated activity signals. Detects routines, emerging interests, stalled threads, and cross-domain opportunities. Trigger phrases: 'analyze patterns', 'detect routines', 'find anomalies', 'what patterns do you see', 'exploration cycle', 'run analysis', 'update corvus'. Do not use for web research (use Sift), person investigations (use Scout), or system architecture changes (use Mentor).
 metadata: {"openclaw":{"emoji":"🐦‍⬛"}}
 ---
 
