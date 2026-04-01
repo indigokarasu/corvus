@@ -35,12 +35,6 @@ Corvus does not own: skill evaluation (Mentor), behavioral refinement (Praxis), 
 
 Corvus emits BehavioralSignal files to Praxis and InsightProposal files to Vesper. Corvus receives research thread signals from Thread.
 
-## Ontology types
-
-- **Concept/Idea** — patterns, hypotheses, and interest clusters surfaced through Chronicle and journal analysis.
-
-Corvus reads Chronicle via Elephas (read-only cooperative query). It does not emit Signals to Elephas; it emits BehavioralSignal files to Praxis and InsightProposal files to Vesper.
-
 ## Commands
 
 - `corvus.analyze.light` — run a light analysis cycle: routine detection, thread monitoring, interest clustering
@@ -98,28 +92,25 @@ Read `references/schemas.md` for exact proposal schema.
 After every analysis cycle (light or deep):
 
 1. Persist hypotheses, patterns, and proposals to local JSONL files
-2. For each validated pattern with `proposal_type: behavioral_signal`: write a BehavioralSignal file to `~/openclaw/data/ocas-praxis/intake/{signal_id}.json`
-3. For each validated proposal reaching sufficient confidence (all types except `behavioral_signal`): write an InsightProposal file to `~/openclaw/data/ocas-vesper/intake/{proposal_id}.json`
-4. Check `~/openclaw/data/ocas-corvus/intake/` for Thread research signals; process and move to `intake/processed/`
+2. For each validated pattern with `proposal_type: behavioral_signal`: write a BehavioralSignal file to `/workspace/openclaw/data/ocas-corvus/signals/{signal_id}.json`. Praxis reads from this directory.
+3. For each validated proposal reaching sufficient confidence (all types except `behavioral_signal`): write an InsightProposal file to `/workspace/openclaw/data/ocas-corvus/proposals/{proposal_id}.json`. Vesper reads from this directory.
+4. Check `/workspace/openclaw/data/ocas-corvus/intake/` for Thread research signals; process and move to `intake/processed/`
 5. Write journal via `corvus.journal`
 
 ## Inter-skill interfaces
 
-Corvus writes BehavioralSignal files to: `~/openclaw/data/ocas-praxis/intake/{signal_id}.json`
-Written when a validated pattern has proposal_type: behavioral_signal.
+**Corvus → Praxis (cooperative read):** Corvus writes BehavioralSignal files to `/workspace/openclaw/data/ocas-corvus/signals/{signal_id}.json`. Praxis reads from this directory. Corvus does not write to Praxis's directories.
 
-Corvus writes InsightProposal files to: `~/openclaw/data/ocas-vesper/intake/{proposal_id}.json`
-Written when a validated proposal reaches sufficient confidence (excludes behavioral_signal type).
+**Corvus → Vesper (cooperative read):** Corvus writes InsightProposal files to `/workspace/openclaw/data/ocas-corvus/proposals/{proposal_id}.json`. Vesper reads from this directory during briefing generation. Corvus does not write to Vesper's directories.
 
-Corvus receives research thread signals from Thread at: `~/openclaw/data/ocas-corvus/intake/{thread_id}.json`
-Read during analysis cycles as additional signal context.
+**Thread → Corvus (push):** Thread writes research thread signals to `/workspace/openclaw/data/ocas-corvus/intake/{thread_id}.json`. Corvus reads during analysis cycles and moves processed files to `intake/processed/`.
 
 See `spec-ocas-interfaces.md` for schemas and handoff contracts.
 
 ## Storage layout
 
 ```
-~/openclaw/data/ocas-corvus/
+/workspace/openclaw/data/ocas-corvus/
   config.json
   hypotheses.jsonl
   patterns.jsonl
@@ -128,9 +119,13 @@ See `spec-ocas-interfaces.md` for schemas and handoff contracts.
   intake/
     {thread_id}.json
     processed/
+  proposals/
+    {proposal_id}.json
+  signals/
+    {signal_id}.json
   reports/
 
-~/openclaw/journals/ocas-corvus/
+/workspace/openclaw/journals/ocas-corvus/
   YYYY-MM-DD/
     {run_id}.json
 ```
@@ -140,7 +135,7 @@ Default config.json:
 ```json
 {
   "skill_id": "ocas-corvus",
-  "skill_version": "2.3.0",
+  "skill_version": "2.4.0",
   "config_version": "1",
   "created_at": "",
   "updated_at": "",
@@ -192,8 +187,8 @@ skill_okrs:
 
 - Elephas — read Chronicle (read-only) for graph context during pattern analysis
 - Thread — receives research thread signals via intake directory
-- Vesper — receives InsightProposal files via Vesper intake directory
-- Praxis — receives BehavioralSignal files via Praxis intake directory
+- Vesper — reads InsightProposal files from Corvus's `proposals/` directory (cooperative read; Corvus owns)
+- Praxis — reads BehavioralSignal files from Corvus's `signals/` directory (cooperative read; Corvus owns)
 - Mentor — Mentor may read Corvus data for evaluation context
 
 ## Journal outputs
@@ -204,16 +199,14 @@ Observation Journal — all analysis cycles (light and deep).
 
 On first invocation of any Corvus command, run `corvus.init`:
 
-1. Create `~/openclaw/data/ocas-corvus/` and subdirectories (`intake/`, `intake/processed/`, `reports/`)
+1. Create `/workspace/openclaw/data/ocas-corvus/` and subdirectories (`intake/`, `intake/processed/`, `proposals/`, `signals/`, `reports/`)
 2. Write default `config.json` with ConfigBase fields if absent
 3. Create empty JSONL files: `hypotheses.jsonl`, `patterns.jsonl`, `proposals.jsonl`, `decisions.jsonl`
-4. Create `~/openclaw/journals/ocas-corvus/`
-5. Ensure `~/openclaw/data/ocas-praxis/intake/` exists (create if missing)
-6. Ensure `~/openclaw/data/ocas-vesper/intake/` exists (create if missing)
-7. Register cron job `corvus:deep` if not already present (check `openclaw cron list` first)
-8. Register heartbeat entry `corvus:light` in `HEARTBEAT.md` if not already present
-9. Register cron job `corvus:update` if not already present (check `openclaw cron list` first)
-10. Log initialization as a DecisionRecord in `decisions.jsonl`
+4. Create `/workspace/openclaw/journals/ocas-corvus/`
+5. Register cron job `corvus:deep` if not already present (check `openclaw cron list` first)
+6. Register heartbeat entry `corvus:light` in `HEARTBEAT.md` if not already present
+7. Register cron job `corvus:update` if not already present (check `openclaw cron list` first)
+8. Log initialization as a DecisionRecord in `decisions.jsonl`
 
 ## Background tasks
 
