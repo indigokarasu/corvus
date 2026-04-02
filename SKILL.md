@@ -2,13 +2,15 @@
 name: ocas-corvus
 source: https://github.com/indigokarasu/corvus
 install: openclaw skill install https://github.com/indigokarasu/corvus
-description: Use when analyzing behavioral patterns, detecting routines, finding anomalies in the knowledge graph, or running exploration cycles across accumulated activity signals. Detects routines, emerging interests, stalled threads, and cross-domain opportunities. Trigger phrases: 'analyze patterns', 'detect routines', 'find anomalies', 'what patterns do you see', 'exploration cycle', 'run analysis', 'update corvus'. Do not use for web research (use Sift), person investigations (use Scout), or system architecture changes (use Mentor).
+description: Use when analyzing behavioral patterns, detecting routines, finding anomalies in the knowledge graph, or running exploration cycles across accumulated activity signals. Reads Chronicle, Memory files, and session logs (human/assistant messages only) as additional pattern sources. Detects routines, emerging interests, stalled threads, and cross-domain opportunities. Trigger phrases: 'analyze patterns', 'detect routines', 'find anomalies', 'what patterns do you see', 'exploration cycle', 'run analysis', 'update corvus'. Do not use for web research (use Sift), person investigations (use Scout), or system architecture changes (use Mentor).
 metadata: {"openclaw":{"emoji":"🐦‍⬛"}}
 ---
 
 # Corvus
 
-Corvus is the system's curiosity engine — it continuously scans the knowledge graph and skill journals to surface behavioral patterns, emerging interests, stalled threads, and cross-domain opportunities that no single skill would notice on its own. It works by forming hypotheses, testing them against accumulated signals, and emitting validated proposals downstream to Praxis and Vesper for action and briefing.
+Corvus is the system's curiosity engine — it continuously scans the knowledge graph, skill journals, Memory files, and session logs to surface behavioral patterns, emerging interests, stalled threads, and cross-domain opportunities that no single skill would notice on its own. It works by forming hypotheses, testing them against accumulated signals, and emitting validated proposals downstream to Praxis and Vesper for action and briefing.
+
+Memory files (`~/.openclaw/workspace/MEMORY.md` and `~/.openclaw/workspace/memory/*.md`) provide persistent user context, preferences, and accumulated knowledge. Session logs (`~/.openclaw/agents/*/sessions/*.jsonl`) provide raw conversational history — Corvus reads only `human` and `assistant` role message entries, skipping all machine noise (toolResult, compaction, custom entries, etc.). Both sources are read-only.
 
 ## When to use
 
@@ -29,9 +31,9 @@ Corvus is the system's curiosity engine — it continuously scans the knowledge 
 
 ## Responsibility boundary
 
-Corvus owns exploratory pattern analysis across the knowledge graph and skill journals.
+Corvus owns exploratory pattern analysis across the knowledge graph, skill journals, Memory files, and session logs.
 
-Corvus does not own: skill evaluation (Mentor), behavioral refinement (Praxis), web research (Sift), knowledge graph writes (Elephas), preference persistence (Taste), browsing interpretation (Thread).
+Corvus does not own: skill evaluation (Mentor), behavioral refinement (Praxis), web research (Sift), knowledge graph writes (Elephas), preference persistence (Taste), browsing interpretation (Thread), Memory writes (OpenClaw core), session log writes (OpenClaw core).
 
 Corvus emits BehavioralSignal files to Praxis and InsightProposal files to Vesper. Corvus receives research thread signals from Thread.
 
@@ -106,6 +108,18 @@ After every analysis cycle (light or deep):
 **Thread → Corvus (push):** Thread writes research thread signals to `/workspace/openclaw/data/ocas-corvus/intake/{thread_id}.json`. Corvus reads during analysis cycles and moves processed files to `intake/processed/`.
 
 See `spec-ocas-interfaces.md` for schemas and handoff contracts.
+
+## Read-only data sources
+
+```
+~/.openclaw/workspace/MEMORY.md              — primary Memory file (read-only)
+~/.openclaw/workspace/memory/*.md            — supplemental Memory files (read-only)
+~/.openclaw/agents/*/sessions/*.jsonl        — session logs (read-only; parse human/assistant messages only)
+~/openclaw/db/ocas-elephas/chronicle.lbug    — Chronicle knowledge graph (read-only)
+~/openclaw/journals/*/                       — skill journals (read-only)
+```
+
+When reading session logs, Corvus filters each JSONL entry by role. Only entries with `"role": "human"` or `"role": "assistant"` are processed. All other entry types — `toolResult`, `toolUse`, `compaction`, `custom`, and any other machine-generated entries — are skipped.
 
 ## Storage layout
 
@@ -186,6 +200,8 @@ skill_okrs:
 ## Optional skill cooperation
 
 - Elephas — read Chronicle (read-only) for graph context during pattern analysis
+- OpenClaw Memory — read `~/.openclaw/workspace/MEMORY.md` and `~/.openclaw/workspace/memory/*.md` (read-only) for persistent user context, preferences, and accumulated knowledge
+- OpenClaw Sessions — read `~/.openclaw/agents/*/sessions/*.jsonl` (read-only) for conversational history; only human/assistant message entries are consumed
 - Thread — receives research thread signals via intake directory
 - Vesper — reads InsightProposal files from Corvus's `proposals/` directory (cooperative read; Corvus owns)
 - Praxis — reads BehavioralSignal files from Corvus's `signals/` directory (cooperative read; Corvus owns)

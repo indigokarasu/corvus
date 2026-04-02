@@ -46,6 +46,11 @@ In a system that accumulates signals from browsing, research, communications, an
 
 ## Changelog
 
+### v2.5.0 -- April 2, 2026
+- Added Memory file reading (`MEMORY.md`, `memory/*.md`) as pattern analysis data source
+- Added session log reading with machine-noise filtering (human/assistant messages only)
+- Added filesystem read permissions for Memory/ and session log paths
+
 ### v2.3.0 -- March 27, 2026
 - Added `corvus.update` command and midnight cron for automatic version-checked self-updates
 
