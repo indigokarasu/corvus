@@ -279,3 +279,13 @@ public
 | `references/curiosity_engine.md` | Before drive scoring or hypothesis generation |
 | `references/pattern_engines.md` | Before pattern detection or validation |
 | `references/journal.md` | Before corvus.journal; at end of every run |
+
+## Update command
+
+This skill self-updates every 24 hours via:
+
+```bash
+openclaw corvus.update
+```
+
+This pulls the latest version from GitHub and restarts the skill's background tasks if applicable.
