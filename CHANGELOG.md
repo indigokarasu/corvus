@@ -1,3 +1,11 @@
+## [2026-04-05] Ontology types fix
+
+### Fixed
+- Added missing `## Ontology types` section to SKILL.md; declares Concept/Idea and Signal extraction per spec-ocas-ontology.md
+
+### Validation
+- ✓ Version: 2.5.1 → 2.5.2
+
 ## [2026-04-04] Spec Compliance Update
 
 ### Changes

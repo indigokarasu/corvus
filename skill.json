@@ -1,6 +1,6 @@
 {
   "name": "ocas-corvus",
-  "version": "2.5.1",
+  "version": "2.5.2",
   "description": "Corvus: exploratory pattern analysis engine for the system knowledge graph, skill journals, Memory files, and session logs. Detects routines, emerging interests, anomalies, stalled threads, and cross-domain opportunities from accumulated activity signals. Reads Memory and session logs (human/assistant messages only) as additional pattern sources. Trigger phrases: 'analyze patterns', 'detect routines', 'find anomalies', 'what patterns do you see', 'exploration cycle', 'run analysis', 'update corvus'. Do not use for web research (use Sift), person investigations (use Scout), or system architecture changes (use Mentor).",
   "author": "Indigo Karasu",
   "email": "mx.indigo.karasu@gmail.com",

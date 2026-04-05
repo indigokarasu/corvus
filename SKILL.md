@@ -37,6 +37,15 @@ Corvus does not own: skill evaluation (Mentor), behavioral refinement (Praxis), 
 
 Corvus emits BehavioralSignal files to Praxis and InsightProposal files to Vesper. Corvus receives research thread signals from Thread.
 
+## Ontology types
+
+Corvus works with these types from `spec-ocas-ontology.md`:
+
+- **Concept/Idea** — patterns, topics, emerging interests, and anomalies detected from accumulated signals.
+- **Signal** — behavioral signals emitted to Praxis for refinement.
+
+Corvus does not emit entity Signals to Elephas/Chronicle. Behavioral signals are written as BehavioralSignal files to `~/openclaw/data/ocas-corvus/signals/` for Praxis to consume directly.
+
 ## Commands
 
 - `corvus.analyze.light` — run a light analysis cycle: routine detection, thread monitoring, interest clustering
