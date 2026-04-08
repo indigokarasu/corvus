@@ -1,3 +1,13 @@
+## [2026-04-08] Filesystem path normalization
+
+### Fixed
+- Corrected filesystem read paths to use `~/openclaw/` prefix consistently instead of `~/.openclaw/`
+- Aligned workspace and memory paths with OCAS storage layout conventions
+
+### Validation
+- ✓ Version: 2.5.2 → 2.5.3
+- ✓ All filesystem paths now conform to spec-ocas-skill-authoring-rules.md
+
 ## [2026-04-05] Ontology types fix
 
 ### Fixed
