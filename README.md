@@ -2,6 +2,9 @@
 
 Corvus is the system's curiosity engine -- it continuously scans the knowledge graph and skill journals to surface behavioral patterns, emerging interests, stalled threads, and cross-domain opportunities that no single skill would notice on its own. It works by forming hypotheses, testing them against accumulated signals, and emitting validated proposals downstream to Praxis and Vesper for action and briefing.
 
+
+Skill packages follow the [agentskills.io](https://agentskills.io/specification) open standard and are compatible with OpenClaw, Hermes Agent, and any agentskills.io-compliant client.
+
 ---
 
 ## Overview
