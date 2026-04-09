@@ -13,7 +13,7 @@ description: >
 metadata:
   author: Indigo Karasu
   email: mx.indigo.karasu@gmail.com
-  version: "2.6.0"
+  version: "2.6.1"
   hermes:
     tags: [analysis, patterns, knowledge-graph]
     category: signal
@@ -26,18 +26,16 @@ metadata:
     visibility: public
     filesystem:
       read:
-        - "$OCAS_DATA_ROOT/data/ocas-corvus/"
-        - "$OCAS_DATA_ROOT/journals/ocas-corvus/"
-        - "$OCAS_DATA_ROOT/db/ocas-elephas/chronicle.lbug"
-        - "$OCAS_DATA_ROOT/journals/*/"
-        - "$OCAS_DATA_ROOT/workspace/MEMORY.md"
-        - "$OCAS_DATA_ROOT/workspace/memory/"
-        - "$OCAS_DATA_ROOT/agents/*/sessions/"
+        - "{agent_root}/commons/data/ocas-corvus/"
+        - "{agent_root}/commons/journals/ocas-corvus/"
+        - "{agent_root}/commons/db/ocas-elephas/chronicle.lbug"
+        - "{agent_root}/commons/journals/*/"
+        - "{agent_root}/commons/workspace/MEMORY.md"
+        - "{agent_root}/commons/workspace/memory/"
+        - "{agent_root}/commons/agents/*/sessions/"
       write:
-        - "$OCAS_DATA_ROOT/data/ocas-corvus/"
-        - "$OCAS_DATA_ROOT/journals/ocas-corvus/"
-        - "$OCAS_DATA_ROOT/data/ocas-praxis/intake/"
-        - "$OCAS_DATA_ROOT/data/ocas-vesper/intake/"
+        - "{agent_root}/commons/data/ocas-corvus/"
+        - "{agent_root}/commons/journals/ocas-corvus/"
     self_update:
       source: "https://github.com/indigokarasu/corvus"
       mechanism: "version-checked tarball from GitHub via gh CLI"
@@ -53,7 +51,7 @@ metadata:
 
 Corvus is the system's curiosity engine — it continuously scans the knowledge graph, skill journals, Memory files, and session logs to surface behavioral patterns, emerging interests, stalled threads, and cross-domain opportunities that no single skill would notice on its own. It works by forming hypotheses, testing them against accumulated signals, and emitting validated proposals downstream to Praxis and Vesper for action and briefing.
 
-Memory files (`$OCAS_WORKSPACE_ROOT/MEMORY.md` and `$OCAS_WORKSPACE_ROOT/memory/*.md`) provide persistent user context, preferences, and accumulated knowledge. Session logs (`$OCAS_WORKSPACE_ROOT/agents/*/sessions/*.jsonl`) provide raw conversational history — Corvus reads only `human` and `assistant` role message entries, skipping all machine noise (toolResult, compaction, custom entries, etc.). Both sources are read-only.
+Memory files (`{agent_root}/MEMORY.md` and `{agent_root}/memory/*.md`) provide persistent user context, preferences, and accumulated knowledge. Session logs (`{agent_root}/agents/*/sessions/*.jsonl`) provide raw conversational history — Corvus reads only `human` and `assistant` role message entries, skipping all machine noise (toolResult, compaction, custom entries, etc.). Both sources are read-only.
 
 ## When to use
 
@@ -87,7 +85,7 @@ Corvus works with these types from `spec-ocas-ontology.md`:
 - **Concept/Idea** — patterns, topics, emerging interests, and anomalies detected from accumulated signals.
 - **Signal** — behavioral signals emitted to Praxis for refinement.
 
-Corvus does not emit entity Signals to Elephas/Chronicle. Behavioral signals are written as BehavioralSignal files to `$OCAS_DATA_ROOT/data/ocas-corvus/signals/` for Praxis to consume directly.
+Corvus does not emit entity Signals to Elephas/Chronicle. Behavioral signals are written as BehavioralSignal files to `{agent_root}/commons/data/ocas-corvus/signals/` for Praxis to consume directly.
 
 ## Commands
 
@@ -146,29 +144,29 @@ Read `references/schemas.md` for exact proposal schema.
 After every analysis cycle (light or deep):
 
 1. Persist hypotheses, patterns, and proposals to local JSONL files
-2. For each validated pattern with `proposal_type: behavioral_signal`: write a BehavioralSignal file to `/workspace/openclaw/data/ocas-corvus/signals/{signal_id}.json`. Praxis reads from this directory.
-3. For each validated proposal reaching sufficient confidence (all types except `behavioral_signal`): write an InsightProposal file to `/workspace/openclaw/data/ocas-corvus/proposals/{proposal_id}.json`. Vesper reads from this directory.
-4. Check `/workspace/openclaw/data/ocas-corvus/intake/` for Thread research signals; process and move to `intake/processed/`
+2. For each validated pattern with `proposal_type: behavioral_signal`: write a BehavioralSignal file to `{agent_root}/commons/data/ocas-corvus/signals/{signal_id}.json`. Praxis reads from this directory.
+3. For each validated proposal reaching sufficient confidence (all types except `behavioral_signal`): write an InsightProposal file to `{agent_root}/commons/data/ocas-corvus/proposals/{proposal_id}.json`. Vesper reads from this directory.
+4. Scan Thread journals for entries with `research_thread` payload; track processed run_ids in ingestion log
 5. Write journal via `corvus.journal`
 
 ## Inter-skill interfaces
 
-**Corvus → Praxis (cooperative read):** Corvus writes BehavioralSignal files to `/workspace/openclaw/data/ocas-corvus/signals/{signal_id}.json`. Praxis reads from this directory. Corvus does not write to Praxis's directories.
+**Corvus → Praxis (cooperative read):** Corvus writes BehavioralSignal files to `{agent_root}/commons/data/ocas-corvus/signals/{signal_id}.json`. Praxis reads from this directory. Corvus does not write to Praxis's directories.
 
-**Corvus → Vesper (cooperative read):** Corvus writes InsightProposal files to `/workspace/openclaw/data/ocas-corvus/proposals/{proposal_id}.json`. Vesper reads from this directory during briefing generation. Corvus does not write to Vesper's directories.
+**Corvus → Vesper (cooperative read):** Corvus writes InsightProposal files to `{agent_root}/commons/data/ocas-corvus/proposals/{proposal_id}.json`. Vesper reads from this directory during briefing generation. Corvus does not write to Vesper's directories.
 
-**Thread → Corvus (push):** Thread writes research thread signals to `/workspace/openclaw/data/ocas-corvus/intake/{thread_id}.json`. Corvus reads during analysis cycles and moves processed files to `intake/processed/`.
+**Thread → Corvus (journal payload):** Thread includes `research_thread` payload in journal entries. Corvus scans Thread journals during analysis cycles and tracks processed run_ids in its ingestion log.
 
 See `spec-ocas-interfaces.md` for schemas and handoff contracts.
 
 ## Read-only data sources
 
 ```
-$OCAS_WORKSPACE_ROOT/MEMORY.md              — primary Memory file (read-only)
-$OCAS_WORKSPACE_ROOT/memory/*.md            — supplemental Memory files (read-only)
-$OCAS_WORKSPACE_ROOT/agents/*/sessions/*.jsonl        — session logs (read-only; parse human/assistant messages only)
-$OCAS_DATA_ROOT/db/ocas-elephas/chronicle.lbug    — Chronicle knowledge graph (read-only)
-$OCAS_DATA_ROOT/journals/*/                       — skill journals (read-only)
+{agent_root}/MEMORY.md              — primary Memory file (read-only)
+{agent_root}/memory/*.md            — supplemental Memory files (read-only)
+{agent_root}/agents/*/sessions/*.jsonl        — session logs (read-only; parse human/assistant messages only)
+{agent_root}/commons/db/ocas-elephas/chronicle.lbug    — Chronicle knowledge graph (read-only)
+{agent_root}/commons/journals/*/                       — skill journals (read-only)
 ```
 
 When reading session logs, Corvus filters each JSONL entry by role. Only entries with `"role": "human"` or `"role": "assistant"` are processed. All other entry types — `toolResult`, `toolUse`, `compaction`, `custom`, and any other machine-generated entries — are skipped.
@@ -176,13 +174,12 @@ When reading session logs, Corvus filters each JSONL entry by role. Only entries
 ## Storage layout
 
 ```
-/workspace/openclaw/data/ocas-corvus/
+{agent_root}/commons/data/ocas-corvus/
   config.json
   hypotheses.jsonl
   patterns.jsonl
   proposals.jsonl
   decisions.jsonl
-  intake/
     {thread_id}.json
     processed/
   proposals/
@@ -191,7 +188,7 @@ When reading session logs, Corvus filters each JSONL entry by role. Only entries
     {signal_id}.json
   reports/
 
-/workspace/openclaw/journals/ocas-corvus/
+{agent_root}/commons/journals/ocas-corvus/
   YYYY-MM-DD/
     {run_id}.json
 ```
@@ -252,9 +249,9 @@ skill_okrs:
 ## Optional skill cooperation
 
 - Elephas — read Chronicle (read-only) for graph context during pattern analysis
-- OpenClaw Memory — read `$OCAS_WORKSPACE_ROOT/MEMORY.md` and `$OCAS_WORKSPACE_ROOT/memory/*.md` (read-only) for persistent user context, preferences, and accumulated knowledge
-- OpenClaw Sessions — read `$OCAS_WORKSPACE_ROOT/agents/*/sessions/*.jsonl` (read-only) for conversational history; only human/assistant message entries are consumed
-- Thread — receives research thread signals via intake directory
+- OpenClaw Memory — read `{agent_root}/MEMORY.md` and `{agent_root}/memory/*.md` (read-only) for persistent user context, preferences, and accumulated knowledge
+- OpenClaw Sessions — read `{agent_root}/agents/*/sessions/*.jsonl` (read-only) for conversational history; only human/assistant message entries are consumed
+- Thread — receives research thread signals via journal payload
 - Vesper — reads InsightProposal files from Corvus's `proposals/` directory (cooperative read; Corvus owns)
 - Praxis — reads BehavioralSignal files from Corvus's `signals/` directory (cooperative read; Corvus owns)
 - Mentor — Mentor may read Corvus data for evaluation context
@@ -267,10 +264,10 @@ Observation Journal — all analysis cycles (light and deep).
 
 On first invocation of any Corvus command, run `corvus.init`:
 
-1. Create `/workspace/openclaw/data/ocas-corvus/` and subdirectories (`intake/`, `intake/processed/`, `proposals/`, `signals/`, `reports/`)
+1. Create `{agent_root}/commons/data/ocas-corvus/` and subdirectories (`proposals/`, `signals/`, `reports/`)
 2. Write default `config.json` with ConfigBase fields if absent
 3. Create empty JSONL files: `hypotheses.jsonl`, `patterns.jsonl`, `proposals.jsonl`, `decisions.jsonl`
-4. Create `/workspace/openclaw/journals/ocas-corvus/`
+4. Create `{agent_root}/commons/journals/ocas-corvus/`
 5. Register cron job `corvus:deep` if not already present (check the platform scheduling registry first)
 6. Register heartbeat entry `corvus:light` in `HEARTBEAT.md` if not already present
 7. Register cron job `corvus:update` if not already present (check the platform scheduling registry first)
@@ -294,7 +291,7 @@ Registration during `corvus.init`:
 # Task declared in SKILL.md frontmatter metadata.{platform}.cron
 ```
 
-Heartbeat registration: append `corvus:light` entry to `$OCAS_WORKSPACE_ROOT/HEARTBEAT.md` if not already present.
+Heartbeat registration: append `corvus:light` entry to `{agent_root}/HEARTBEAT.md` if not already present.
 
 
 ## Self-update

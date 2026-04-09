@@ -54,4 +54,4 @@ priority = (novelty_weight × novelty_score) +
            (prediction_error_weight × prediction_error_score)
 ```
 
-Weights are configurable in `$OCAS_DATA_ROOT/data/ocas-corvus/config.json`.
+Weights are configurable in `{agent_root}/commons/data/ocas-corvus/config.json`.

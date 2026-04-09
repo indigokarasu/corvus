@@ -32,9 +32,9 @@ In a system that accumulates signals from browsing, research, communications, an
 
 **OCAS Skills**
 - [Elephas](https://github.com/indigokarasu/elephas) -- Chronicle read-only, graph context during pattern analysis
-- [Praxis](https://github.com/indigokarasu/praxis) -- receives BehavioralSignal files via intake directory
-- [Vesper](https://github.com/indigokarasu/vesper) -- receives InsightProposal files via intake directory
-- [Thread](https://github.com/indigokarasu/thread) -- sends research thread signals via Corvus intake directory
+- [Praxis](https://github.com/indigokarasu/praxis) -- receives BehavioralSignal files via journal payload
+- [Vesper](https://github.com/indigokarasu/vesper) -- receives InsightProposal files via journal payload
+- [Thread](https://github.com/indigokarasu/thread) -- sends research thread signals via Corvus journal payload
 
 **External**
 - None
