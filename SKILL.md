@@ -13,7 +13,7 @@ description: >
 metadata:
   author: Indigo Karasu
   email: mx.indigo.karasu@gmail.com
-  version: "2.6.1"
+  version: "2.6.2"
   hermes:
     tags: [analysis, patterns, knowledge-graph]
     category: signal
@@ -74,7 +74,7 @@ Memory files (`{agent_root}/MEMORY.md` and `{agent_root}/memory/*.md`) provide p
 
 Corvus owns exploratory pattern analysis across the knowledge graph, skill journals, Memory files, and session logs.
 
-Corvus does not own: skill evaluation (Mentor), behavioral refinement (Praxis), web research (Sift), knowledge graph writes (Elephas), preference persistence (Taste), browsing interpretation (Thread), Memory writes (OpenClaw core), session log writes (OpenClaw core).
+Corvus does not own: skill evaluation (Mentor), behavioral refinement (Praxis), web research (Sift), knowledge graph writes (Elephas), preference persistence (Taste), browsing interpretation (Thread), Memory writes (the agent platform), session log writes (the agent platform).
 
 Corvus emits BehavioralSignal files to Praxis and InsightProposal files to Vesper. Corvus receives research thread signals from Thread.
 
@@ -249,8 +249,8 @@ skill_okrs:
 ## Optional skill cooperation
 
 - Elephas — read Chronicle (read-only) for graph context during pattern analysis
-- OpenClaw Memory — read `{agent_root}/MEMORY.md` and `{agent_root}/memory/*.md` (read-only) for persistent user context, preferences, and accumulated knowledge
-- OpenClaw Sessions — read `{agent_root}/agents/*/sessions/*.jsonl` (read-only) for conversational history; only human/assistant message entries are consumed
+- Agent Memory — read `{agent_root}/MEMORY.md` and `{agent_root}/memory/*.md` (read-only) for persistent user context, preferences, and accumulated knowledge
+- Agent Sessions — read `{agent_root}/agents/*/sessions/*.jsonl` (read-only) for conversational history; only human/assistant message entries are consumed
 - Thread — receives research thread signals via journal payload
 - Vesper — reads InsightProposal files from Corvus's `proposals/` directory (cooperative read; Corvus owns)
 - Praxis — reads BehavioralSignal files from Corvus's `signals/` directory (cooperative read; Corvus owns)
@@ -333,7 +333,7 @@ public
 This skill self-updates every 24 hours via:
 
 ```bash
-openclaw corvus.update
+corvus.update
 ```
 
 This pulls the latest version from GitHub and restarts the skill's background tasks if applicable.
