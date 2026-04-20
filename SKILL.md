@@ -164,12 +164,20 @@ See `spec-ocas-interfaces.md` for schemas and handoff contracts.
 ```
 {agent_root}/MEMORY.md              — primary Memory file (read-only)
 {agent_root}/memory/*.md            — supplemental Memory files (read-only)
-{agent_root}/agents/*/sessions/*.jsonl        — session logs (read-only; parse human/assistant messages only)
-{agent_root}/commons/db/ocas-elephas/chronicle.lbug    — Chronicle knowledge graph (read-only)
+{agent_root}/sessions/*.jsonl       — session logs (read-only; parse human/assistant messages only)
+{agent_root}/commons/db/ocas-elephas/chronicle.lbug    — Chronicle knowledge graph (read-only, NOT SQLite — see pitfall)
 {agent_root}/commons/journals/*/                       — skill journals (read-only)
 ```
 
 When reading session logs, Corvus filters each JSONL entry by role. Only entries with `"role": "human"` or `"role": "assistant"` are processed. All other entry types — `toolResult`, `toolUse`, `compaction`, `custom`, and any other machine-generated entries — are skipped.
+
+### Data source pitfalls
+
+**Chronicle (`chronicle.lbug`)** is NOT a SQLite database despite its file extension. Attempting `sqlite3.connect()` will raise `DatabaseError: file is not a database`. Use the MemPalace MCP tools (`mcp_mempalace_mempalace_kg_query`, `mcp_mempalace_mempalace_kg_stats`, `mcp_mempalace_mempalace_kg_timeline`) to query the knowledge graph. Alternatively, `mcp_mempalace_mempalace_search` provides semantic search over stored drawers.
+
+**Session logs** live at `{agent_root}/sessions/*.jsonl` (flat directory), not under `agents/*/sessions/`. The `agents/` path from earlier skill versions is deprecated.
+
+**When using `execute_code` with heredocs and `terminal()`**, avoid nested f-strings with shell variable interpolation — use separate tool calls or write Python scripts to disk instead. The execute_code sandbox's string escaping breaks with complex heredoc nesting.
 
 ## Storage layout
 
