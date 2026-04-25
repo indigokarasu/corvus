@@ -19,7 +19,7 @@ metadata:
     category: signal
     cron:
       - name: "corvus:update"
-        schedule: "0 0 * * *"
+        schedule: "0 7 * * *"
         command: "corvus.update"
   openclaw:
     skill_type: system
@@ -43,7 +43,7 @@ metadata:
       requires_binaries: [gh, tar, python3]
     cron:
       - name: "corvus:update"
-        schedule: "0 0 * * *"
+        schedule: "0 7 * * *"
         command: "corvus.update"
 ---
 
