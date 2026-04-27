@@ -49,6 +49,12 @@ In a system that accumulates signals from browsing, research, communications, an
 
 ## Changelog
 
+### v2.6.5 -- April 26, 2026
+- Corrected session log path documentation: actual location is `{agent_root}/sessions/*.jsonl` (flat directory), not `{agent_root}/agents/*/sessions/`
+- Documented Chronicle data-source pitfall: `chronicle.lbug` is not SQLite; use MemPalace MCP tools (`mcp_mempalace_*`) for queries
+- Added `execute_code` heredoc + nested f-string warning to data-source pitfalls
+- Cron schedules converted from PT to UTC (cron evaluates in UTC). `corvus:update` now `0 7 * * *`
+
 ### v2.5.0 -- April 2, 2026
 - Added Memory file reading (`MEMORY.md`, `memory/*.md`) as pattern analysis data source
 - Added session log reading with machine-noise filtering (human/assistant messages only)
@@ -64,9 +70,6 @@ In a system that accumulates signals from browsing, research, communications, an
 - Analysis cycle completion with full Praxis and Vesper signal emission
 - Initialization with cron and heartbeat registration
 - Background task definitions
-
-### v2.0.0 -- March 18, 2026
-- Initial release as part of the unified OCAS skill suite
 ---
 
 *Corvus is part of the [OCAS Agent Suite](https://github.com/indigokarasu) -- a collection of interconnected skills for personal intelligence, autonomous research, and continuous self-improvement. Each skill owns a narrow responsibility and communicates with others through structured signal files, shared journals, and Chronicle, a long-term knowledge graph that accumulates verified facts over time.*

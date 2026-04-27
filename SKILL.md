@@ -13,7 +13,7 @@ description: >
 metadata:
   author: Indigo Karasu
   email: mx.indigo.karasu@gmail.com
-  version: "2.6.3"
+  version: "2.6.5"
   hermes:
     tags: [analysis, patterns, knowledge-graph]
     category: signal

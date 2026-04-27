@@ -1,3 +1,13 @@
+## [2.6.5] - 2026-04-26
+
+### Fixed
+- Corrected session log path documentation: actual location is `{agent_root}/sessions/*.jsonl` (flat directory), not `{agent_root}/agents/*/sessions/`
+- Documented Chronicle data-source pitfall: `chronicle.lbug` is not SQLite; use MemPalace MCP tools (`mcp_mempalace_*`) for queries
+- Added `execute_code` heredoc + nested f-string warning to data-source pitfalls
+
+### Changed
+- Cron schedules converted from PT to UTC (cron evaluates in UTC). `corvus:update` now `0 7 * * *`
+
 ## [2026-04-08] Filesystem path normalization
 
 ### Fixed
