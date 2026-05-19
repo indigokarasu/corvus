@@ -201,7 +201,6 @@ When reading session logs, Corvus filters each JSONL entry by role. Only entries
     {run_id}.json
 ```
 
-
 Default config.json:
 ```json
 {
@@ -301,7 +300,6 @@ Registration during `corvus.init`:
 
 Heartbeat registration: append `corvus:light` entry to `{agent_root}/HEARTBEAT.md` if not already present.
 
-
 ## Self-update
 
 `corvus.update` pulls the latest package from the `source:` URL in this file's frontmatter. Runs silently — no output unless the version changed or an error occurred.
@@ -321,7 +319,6 @@ Heartbeat registration: append `corvus:light` entry to `{agent_root}/HEARTBEAT.m
    ```
 6. On failure → retry once. If second attempt fails, report the error and stop.
 7. Output exactly: `I updated Corvus from version {old} to {new}`
-
 
 ## Visibility
 
